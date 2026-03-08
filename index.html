@@ -1,51 +1,59 @@
 <!DOCTYPE html>
-
- <html>
+<html>
 <head>
-<title>Image Resize Tool</title>
+<title>Image Resizer Tool</title>
+
 <style>
 body{
 font-family:Arial;
-text-align:center;
 background:#f2f2f2;
+text-align:center;
 }
 
 .container{
 background:white;
+width:420px;
+margin:40px auto;
 padding:20px;
-margin:50px auto;
-width:350px;
 border-radius:10px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-input,button{
-margin:10px;
-padding:8px;
+.drop{
+border:2px dashed #999;
+padding:40px;
+cursor:pointer;
+margin-bottom:15px;
 }
 
-canvas{
+button{
+padding:8px 15px;
 margin-top:10px;
-} </style>
+}
+</style>
 
 </head>
 
 <body>
 
 <div class="container">
+
 <h2>Image Resize Tool</h2>
 
-<input type="file" id="upload">
+<div class="drop" onclick="document.getElementById('file').click()">
+Select or Drag Image
+<input type="file" id="file" hidden>
+</div>
+
+<p>Width: <span id="w"></span></p>
+<p>Height: <span id="h"></span></p>
+
+<p>Target Size (KB)</p>
+<input type="number" id="kb" placeholder="Example 200">
 
 <br>
 
-Width: <input type="number" id="width" placeholder="Width">
-
-Height: <input type="number" id="height" placeholder="Height">
-
-<br>
-
-<button onclick="resizeImage()">Resize</button>
+<button onclick="resize()">Resize</button>
 
 <br>
 
@@ -53,38 +61,40 @@ Height: <input type="number" id="height" placeholder="Height">
 
 <br>
 
-<a id="download" download="resized-image.png">
-<button>Download Image</button>
+<a id="download" download="image.jpg">
+<button>Download</button>
 </a>
 
 </div>
 
 <script>
 
-function resizeImage(){
+let fileInput=document.getElementById("file");
+let img=new Image();
 
-let file=document.getElementById("upload").files[0];
-let width=document.getElementById("width").value;
-let height=document.getElementById("height").value;
+fileInput.onchange=function(){
+let file=this.files[0];
+img.src=URL.createObjectURL(file);
+}
+
+img.onload=function(){
+document.getElementById("w").innerText=img.width;
+document.getElementById("h").innerText=img.height;
+}
+
+function resize(){
 
 let canvas=document.getElementById("canvas");
 let ctx=canvas.getContext("2d");
 
-let img=new Image();
+canvas.width=img.width;
+canvas.height=img.height;
 
-img.onload=function(){
+ctx.drawImage(img,0,0);
 
-canvas.width=width;
-canvas.height=height;
+let url=canvas.toDataURL("image/jpeg",0.8);
 
-ctx.drawImage(img,0,0,width,height);
-
-let link=document.getElementById("download");
-link.href=canvas.toDataURL();
-
-}
-
-img.src=URL.createObjectURL(file);
+document.getElementById("download").href=url;
 
 }
 
