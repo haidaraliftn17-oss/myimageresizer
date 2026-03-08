@@ -114,7 +114,7 @@ alert("Enter target KB");
 return;
 }
 
-compress(kb);
+compress(parseInt(kb));
 
 }
 
@@ -128,17 +128,23 @@ canvas.height=img.height;
 
 ctx.drawImage(img,0,0);
 
-let quality=0.9;
-let url;
-let sizeKB;
+let quality=0.95;
+let url="";
+let sizeKB=0;
 
-do{
+while(quality>0){
 
 url=canvas.toDataURL("image/jpeg",quality);
-sizeKB=Math.round((url.length*3/4)/1024);
-quality-=0.05;
 
-}while(sizeKB>targetKB && quality>0.05);
+sizeKB=Math.round((url.length*3/4)/1024);
+
+if(sizeKB<=targetKB){
+break;
+}
+
+quality-=0.01;
+
+}
 
 document.getElementById("download").href=url;
 
