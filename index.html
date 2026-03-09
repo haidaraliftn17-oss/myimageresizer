@@ -15,78 +15,47 @@ text-align:center;
 background:white;
 width:420px;
 margin:40px auto;
-padding:20px;
+padding:25px;
 border-radius:10px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Heading */
-h2{
+h1{
 margin-bottom:5px;
 }
 
-.sub-text{
-color:#666;
+p{
+color:gray;
 font-size:14px;
-margin-bottom:20px;
 }
 
-/* Upload box */
-.drop{
-border:2px dashed #999;
-padding:40px 20px;
-cursor:pointer;
-margin-bottom:15px;
+.drop-box{
+border:2px dashed #aaa;
+padding:40px;
+margin-top:20px;
 border-radius:10px;
 background:#fafafa;
-text-align:center;
-}
-
-.drop:hover{
-background:#f0f0f0;
-}
-
-.upload-text{
-font-size:18px;
-color:#555;
-margin-bottom:15px;
-}
-
-/* Blue button */
-.blue-btn{
-background:#007BFF;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:5px;
-cursor:pointer;
-font-size:15px;
-}
-
-.blue-btn:hover{
-background:#0056b3;
 }
 
 button{
-padding:8px 15px;
-margin:5px;
-cursor:pointer;
-}
-
-canvas{
-display:block;
-margin:15px auto;
-max-width:100%;
-}
-
-#download{
-display:inline-block;
-margin-top:10px;
 padding:10px 20px;
-background:#4CAF50;
+margin-top:10px;
+border:none;
+border-radius:6px;
+background:#007bff;
 color:white;
-text-decoration:none;
-border-radius:4px;
+cursor:pointer;
+font-size:14px;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+input{
+margin-top:15px;
+padding:6px;
+width:100px;
 }
 
 </style>
@@ -96,111 +65,92 @@ border-radius:4px;
 
 <div class="container">
 
-<h2>Image Resize in KB</h2>
+<h1>Image Resize in KB</h1>
 
-<div class="sub-text">
-Compress an image to 20kb, 50kb, 200kb, or any other size
-</div>
+<p>Compress an image to 20kb, 50kb, 200kb, or any other size</p>
 
-<div class="drop" id="dropArea">
+<div class="drop-box">
+<p>Select or Drag and Drop Image Here</p>
 
-<div class="upload-text">
-Select or Drag and Drop Image Here
-</div>
+<button onclick="document.getElementById('imageInput').click()">
+Select Image
+</button>
 
-<button class="blue-btn" onclick="selectImage()">Select Image</button>
-
-<input type="file" id="file" hidden>
+<input type="file" id="imageInput" accept="image/*" hidden>
 
 </div>
 
-<p>Width: <span id="w"></span></p>
-<p>Height: <span id="h"></span></p>
-
-<p>Target Size (KB)</p>
-<input type="number" id="kb" placeholder="Example 200">
-
-<br><br>
-
-<button class="blue-btn" onclick="resize()">Resize</button>
-
-<br><br>
-
-<b>Quick Compress</b>
 <br>
 
-<button onclick="compress(20)">20KB</button>
-<button onclick="compress(30)">30KB</button>
-<button onclick="compress(40)">40KB</button>
-<button onclick="compress(50)">50KB</button>
+<label>Enter Size (KB)</label><br>
 
-<canvas id="canvas"></canvas>
+<input type="number" id="size" placeholder="50">
 
-<a id="download" download="image.jpg">Download Image</a>
+<br>
+
+<button onclick="resizeImage()">
+Resize Image
+</button>
+
+<br>
+
+<button id="downloadBtn" style="display:none;">
+Download Image
+</button>
 
 </div>
 
 <script>
 
-let fileInput=document.getElementById("file");
-let img=new Image();
+let resizedImage = "";
 
-function selectImage(){
-fileInput.click();
-}
+function resizeImage(){
 
-fileInput.onchange=function(){
-let file=this.files[0];
-if(!file) return;
-img.src=URL.createObjectURL(file);
-}
+let file = document.getElementById("imageInput").files[0];
 
-img.onload=function(){
-document.getElementById("w").innerText=img.width;
-document.getElementById("h").innerText=img.height;
-}
-
-function resize(){
-let kb=document.getElementById("kb").value;
-if(!kb){
-alert("Enter target KB");
+if(!file){
+alert("Please select image");
 return;
 }
-compress(parseInt(kb));
-}
 
-function compress(targetKB){
+let reader = new FileReader();
 
-let canvas=document.getElementById("canvas");
-let ctx=canvas.getContext("2d");
+reader.onload = function(e){
 
-canvas.width=img.width;
-canvas.height=img.height;
+let img = new Image();
+
+img.onload = function(){
+
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
+
+canvas.width = img.width;
+canvas.height = img.height;
 
 ctx.drawImage(img,0,0);
 
-let quality=0.95;
-let url="";
-let sizeKB=0;
+resizedImage = canvas.toDataURL("image/jpeg",0.7);
 
-while(quality>0){
-
-url=canvas.toDataURL("image/jpeg",quality);
-sizeKB=Math.round((url.length*3/4)/1024);
-
-if(sizeKB<=targetKB) break;
-
-quality-=0.01;
+document.getElementById("downloadBtn").style.display="inline-block";
 
 }
 
-document.getElementById("download").href=url;
+img.src = e.target.result;
 
 }
 
-document.getElementById("dropArea").onclick=function(){
-fileInput.click();
-};
+reader.readAsDataURL(file);
+
+}
+
+document.getElementById("downloadBtn").onclick=function(){
+
+let a=document.createElement("a");
+a.href=resizedImage;
+a.download="compressed-image.jpg";
+a.click();
+
+}
 
 </script>
 
