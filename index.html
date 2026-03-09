@@ -1,158 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Image Resize in KB</title>
+<div style="margin-top:20px;">
 
-<style>
+<span style="margin-right:10px;font-weight:bold;">Size</span>
 
-body{
-font-family:Arial;
-background:#f2f2f2;
-text-align:center;
-}
+<div style="display:inline-block;position:relative;">
 
-.container{
-background:white;
-width:420px;
-margin:40px auto;
-padding:25px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-h1{
-margin-bottom:5px;
-}
-
-p{
+<span style="
+position:absolute;
+left:10px;
+top:6px;
 color:gray;
 font-size:14px;
-}
+">KB</span>
 
-.drop-box{
-border:2px dashed #aaa;
-padding:40px;
-margin-top:20px;
-border-radius:10px;
-background:#fafafa;
-}
-
-button{
-padding:10px 20px;
-margin-top:10px;
-border:none;
+<input type="number" id="size" placeholder="50" style="
+padding-left:35px;
+height:30px;
+width:120px;
+border:1px solid #ccc;
 border-radius:6px;
-background:#007bff;
-color:white;
-cursor:pointer;
-font-size:14px;
-}
-
-button:hover{
-background:#0056b3;
-}
-
-input{
-margin-top:15px;
-padding:6px;
-width:100px;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>Image Resize in KB</h1>
-
-<p>Compress an image to 20kb, 50kb, 200kb, or any other size</p>
-
-<div class="drop-box">
-<p>Select or Drag and Drop Image Here</p>
-
-<button onclick="document.getElementById('imageInput').click()">
-Select Image
-</button>
-
-<input type="file" id="imageInput" accept="image/*" hidden>
+">
 
 </div>
 
-<br>
-
-<label>Enter Size (KB)</label><br>
-
-<input type="number" id="size" placeholder="50">
-
-<br>
-
-<button onclick="resizeImage()">
-Resize Image
-</button>
-
-<br>
-
-<button id="downloadBtn" style="display:none;">
-Download Image
-</button>
-
 </div>
-
-<script>
-
-let resizedImage = "";
-
-function resizeImage(){
-
-let file = document.getElementById("imageInput").files[0];
-
-if(!file){
-alert("Please select image");
-return;
-}
-
-let reader = new FileReader();
-
-reader.onload = function(e){
-
-let img = new Image();
-
-img.onload = function(){
-
-let canvas = document.createElement("canvas");
-let ctx = canvas.getContext("2d");
-
-canvas.width = img.width;
-canvas.height = img.height;
-
-ctx.drawImage(img,0,0);
-
-resizedImage = canvas.toDataURL("image/jpeg",0.7);
-
-document.getElementById("downloadBtn").style.display="inline-block";
-
-}
-
-img.src = e.target.result;
-
-}
-
-reader.readAsDataURL(file);
-
-}
-
-document.getElementById("downloadBtn").onclick=function(){
-
-let a=document.createElement("a");
-a.href=resizedImage;
-a.download="compressed-image.jpg";
-a.click();
-
-}
-
-</script>
-
-</body>
-</html>
