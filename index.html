@@ -18,14 +18,14 @@ body{
   box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Drop area */
+/* Drop area with subtle background color */
 .drop{
   border:2px dashed #999;
   padding:40px;
   cursor:pointer;
   margin-bottom:15px;
   border-radius:10px;
-  background:#fff;
+  background:linear-gradient(135deg, #f9f9f9, #e0e0e0); /* subtle color */
   transition:0.3s;
   display:flex;
   flex-direction:column;
@@ -34,7 +34,7 @@ body{
   gap:20px;
 }
 .drop:hover{
-  background:#f0f0f0;
+  background:linear-gradient(135deg, #f1f1f1, #d8d8d8);
 }
 
 .drop img{
@@ -42,6 +42,7 @@ body{
   height:120px;  /* Bada logo */
   object-fit:cover;
   border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.2); /* thoda depth */
 }
 
 /* Buttons */
@@ -74,7 +75,7 @@ canvas{
 
 <h2>Image Resize Tool</h2>
 
-<!-- Drop area with only big logo -->
+<!-- Drop area with big logo and subtle color -->
 <div class="drop" id="dropArea">
   <img id="dropLogo" src="red-logo.png" alt="">
   <span>Select or Drag Image</span>
