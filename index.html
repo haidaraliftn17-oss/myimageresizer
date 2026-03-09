@@ -46,6 +46,7 @@ background:#007bff;
 color:white;
 cursor:pointer;
 font-size:14px;
+margin:5px;
 }
 
 button:hover{
@@ -56,6 +57,14 @@ input{
 margin-top:15px;
 padding:6px;
 width:100px;
+}
+
+.quick-buttons button{
+background:#28a745;
+}
+
+.quick-buttons button:hover{
+background:#1e7e34;
 }
 
 </style>
@@ -83,14 +92,20 @@ Select Image
 <br>
 
 <label>Enter Size (KB)</label><br>
-
 <input type="number" id="size" placeholder="50">
 
 <br>
 
-<p style="margin-top:10px;color:gray;">
-Quick Compress: 20kb, 30kb, 40kb, 50kb
-</p>
+<p style="margin-top:15px;">Quick Compress</p>
+
+<div class="quick-buttons">
+<button onclick="setSize(20)">20 KB</button>
+<button onclick="setSize(30)">30 KB</button>
+<button onclick="setSize(40)">40 KB</button>
+<button onclick="setSize(50)">50 KB</button>
+</div>
+
+<br>
 
 <button onclick="resizeImage()">
 Resize Image
@@ -107,6 +122,10 @@ Download Image
 <script>
 
 let resizedImage = "";
+
+function setSize(kb){
+document.getElementById("size").value = kb;
+}
 
 function resizeImage(){
 
