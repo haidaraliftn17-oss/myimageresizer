@@ -112,6 +112,7 @@ let img=new Image();
 
 fileInput.onchange=function(){
   let file=this.files[0];
+  if(!file) return;
   img.src=URL.createObjectURL(file);
 }
 
@@ -153,6 +154,7 @@ const dropArea = document.getElementById('dropArea');
 const dropLogo = document.getElementById('dropLogo');
 const dropText = document.getElementById('dropText');
 
+// List of galleries
 const galleries = [
   {text:"Red Gallery", logo:"red-logo.png", color:"#ff0000"},
   {text:"Blue Gallery", logo:"blue-logo.png", color:"#0000ff"},
@@ -161,14 +163,15 @@ const galleries = [
 
 let currentIndex = 0;
 
-// Click to cycle gallery + open file select
+// Click drop area to cycle gallery + open file select
 dropArea.addEventListener('click', () => {
   currentIndex = (currentIndex + 1) % galleries.length;
-  dropLogo.src = galleries[currentIndex].logo;
-  dropText.textContent = galleries[currentIndex].text;
-  dropText.style.color = galleries[currentIndex].color;
+  const gallery = galleries[currentIndex];
 
-  // Trigger file input
+  dropLogo.src = gallery.logo;
+  dropText.textContent = gallery.text;
+  dropText.style.color = gallery.color;
+
   fileInput.click();
 });
 </script>
