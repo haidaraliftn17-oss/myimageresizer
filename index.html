@@ -19,7 +19,7 @@ body{
   box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-/* File drop area with logo & color */
+/* File drop area with only logo */
 .drop{
   border:2px dashed #999;
   padding:40px;
@@ -28,7 +28,6 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:15px;
   border-radius:10px;
   background:#fff;
   transition:0.3s;
@@ -38,10 +37,10 @@ body{
 }
 
 .drop img{
-  width:40px;
-  height:40px;
+  width:60px;
+  height:60px;
   object-fit:cover;
-  border-radius:6px;
+  border-radius:8px;
 }
 
 /* Buttons */
@@ -75,10 +74,9 @@ canvas{
 
 <h2>Image Resize Tool</h2>
 
-<!-- Drop area with gallery logo & text -->
+<!-- Drop area with only logo -->
 <div class="drop" id="dropArea">
   <img id="dropLogo" src="red-logo.png" alt="Logo">
-  <span id="dropText" style="color:#ff0000;">Select or Drag Image</span>
   <input type="file" id="file" hidden>
 </div>
 
@@ -149,15 +147,14 @@ function compress(targetKB){
   document.getElementById("download").href=url;
 }
 
-// Gallery logo + color for drop area
+// Gallery logos for drop area
 const dropArea = document.getElementById('dropArea');
 const dropLogo = document.getElementById('dropLogo');
-const dropText = document.getElementById('dropText');
 
 const galleries = [
-  {text:"Red Gallery", logo:"red-logo.png", color:"#ff0000"},
-  {text:"Blue Gallery", logo:"blue-logo.png", color:"#0000ff"},
-  {text:"Green Gallery", logo:"green-logo.png", color:"#00ff00"}
+  {logo:"red-logo.png"},
+  {logo:"blue-logo.png"},
+  {logo:"green-logo.png"}
 ];
 
 let currentIndex = 0;
@@ -168,8 +165,6 @@ dropArea.addEventListener('click', () => {
   const gallery = galleries[currentIndex];
 
   dropLogo.src = gallery.logo;
-  dropText.textContent = gallery.text;
-  dropText.style.color = gallery.color;
 
   fileInput.click();
 });
