@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>Image Resizer Tool</title>
-
 <style>
 body{
   font-family:Arial;
@@ -19,18 +18,20 @@ body{
   box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-/* File drop area with only logo */
+/* Drop area */
 .drop{
   border:2px dashed #999;
   padding:40px;
   cursor:pointer;
   margin-bottom:15px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   border-radius:10px;
   background:#fff;
   transition:0.3s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
 }
 .drop:hover{
   background:#f0f0f0;
@@ -66,7 +67,6 @@ canvas{
   border-radius:4px;
 }
 </style>
-
 </head>
 <body>
 
@@ -74,9 +74,10 @@ canvas{
 
 <h2>Image Resize Tool</h2>
 
-<!-- Drop area with only logo -->
+<!-- Drop area with only logo centered -->
 <div class="drop" id="dropArea">
   <img id="dropLogo" src="red-logo.png" alt="Logo">
+  <span>Select or Drag Image</span>
   <input type="file" id="file" hidden>
 </div>
 
