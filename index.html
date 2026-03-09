@@ -4,55 +4,114 @@
 <title>Image Resizer Tool</title>
 
 <style>
-
 body{
-font-family:Arial;
-background:#f2f2f2;
-text-align:center;
+  font-family:Arial;
+  background:#f2f2f2;
+  text-align:center;
 }
 
 .container{
-background:white;
-width:420px;
-margin:40px auto;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+  background:white;
+  width:420px;
+  margin:40px auto;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
+/* File drop area */
 .drop{
-border:2px dashed #999;
-padding:40px;
-cursor:pointer;
-margin-bottom:15px;
+  border:2px dashed #999;
+  padding:40px;
+  cursor:pointer;
+  margin-bottom:15px;
 }
 
+/* Buttons */
 button{
-padding:8px 15px;
-margin:5px;
-cursor:pointer;
+  padding:8px 15px;
+  margin:5px;
+  cursor:pointer;
 }
 
 canvas{
-display:block;
-margin:15px auto;
-max-width:100%;
+  display:block;
+  margin:15px auto;
+  max-width:100%;
 }
 
 #download{
-display:inline-block;
-margin-top:10px;
-padding:10px 20px;
-background:#4CAF50;
-color:white;
-text-decoration:none;
-border-radius:4px;
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 20px;
+  background:#4CAF50;
+  color:white;
+  text-decoration:none;
+  border-radius:4px;
 }
 
+/* Custom dropdown for gallery logos */
+.custom-select{
+  position:relative;
+  width:250px;
+  margin:15px auto;
+  text-align:left;
+}
+
+.select-selected{
+  background:#fff;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.select-selected img{
+  width:25px;
+  height:25px;
+  object-fit:cover;
+  border-radius:4px;
+}
+
+.select-items{
+  position:absolute;
+  background:#fff;
+  top:100%;
+  left:0;
+  right:0;
+  border:1px solid #ccc;
+  border-top:none;
+  border-radius:0 0 8px 8px;
+  display:none;
+  z-index:99;
+  max-height:200px;
+  overflow-y:auto;
+}
+
+.select-items div{
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+
+.select-items div:hover{
+  background:#e2e2e2;
+}
+
+.select-items img{
+  width:25px;
+  height:25px;
+  object-fit:cover;
+  border-radius:4px;
+}
 </style>
 
 </head>
-
 <body>
 
 <div class="container">
@@ -71,85 +130,105 @@ Select or Drag Image
 <input type="number" id="kb" placeholder="Example 200">
 
 <br>
-
 <button onclick="resize()">Resize</button>
 
 <br><br>
 
 <b>Quick Compress</b>
 <br>
-
 <button onclick="compress(20)">20KB</button>
 <button onclick="compress(30)">30KB</button>
 <button onclick="compress(40)">40KB</button>
 <button onclick="compress(50)">50KB</button>
 
-<canvas id="canvas"></canvas>
+<!-- Custom Dropdown -->
+<div class="custom-select">
+  <div class="select-selected">
+    <img src="red-logo.png" alt="Logo">
+    <span>Red Gallery</span>
+  </div>
+  <div class="select-items">
+    <div data-color="#ff0000" data-logo="red-logo.png"><img src="red-logo.png" alt="Logo">Red Gallery</div>
+    <div data-color="#0000ff" data-logo="blue-logo.png"><img src="blue-logo.png" alt="Logo">Blue Gallery</div>
+    <div data-color="#00ff00" data-logo="green-logo.png"><img src="green-logo.png" alt="Logo">Green Gallery</div>
+  </div>
+</div>
 
+<canvas id="canvas"></canvas>
 <a id="download" download="image.jpg">Download Image</a>
 
 </div>
 
 <script>
-
+// Image Resize Logic
 let fileInput=document.getElementById("file");
 let img=new Image();
 
 fileInput.onchange=function(){
-let file=this.files[0];
-img.src=URL.createObjectURL(file);
+  let file=this.files[0];
+  img.src=URL.createObjectURL(file);
 }
 
 img.onload=function(){
-document.getElementById("w").innerText=img.width;
-document.getElementById("h").innerText=img.height;
+  document.getElementById("w").innerText=img.width;
+  document.getElementById("h").innerText=img.height;
 }
 
 function resize(){
-
-let kb=document.getElementById("kb").value;
-
-if(!kb){
-alert("Enter target KB");
-return;
-}
-
-compress(parseInt(kb));
-
+  let kb=document.getElementById("kb").value;
+  if(!kb){ alert("Enter target KB"); return; }
+  compress(parseInt(kb));
 }
 
 function compress(targetKB){
+  let canvas=document.getElementById("canvas");
+  let ctx=canvas.getContext("2d");
 
-let canvas=document.getElementById("canvas");
-let ctx=canvas.getContext("2d");
+  canvas.width=img.width;
+  canvas.height=img.height;
+  ctx.drawImage(img,0,0);
 
-canvas.width=img.width;
-canvas.height=img.height;
+  let quality=0.95;
+  let url="";
+  let sizeKB=0;
 
-ctx.drawImage(img,0,0);
+  while(quality>0){
+    url=canvas.toDataURL("image/jpeg",quality);
+    sizeKB=Math.round((url.length*3/4)/1024);
+    if(sizeKB<=targetKB) break;
+    quality-=0.01;
+  }
 
-let quality=0.95;
-let url="";
-let sizeKB=0;
-
-while(quality>0){
-
-url=canvas.toDataURL("image/jpeg",quality);
-
-sizeKB=Math.round((url.length*3/4)/1024);
-
-if(sizeKB<=targetKB){
-break;
+  document.getElementById("download").href=url;
 }
 
-quality-=0.01;
+// Custom Dropdown Logic
+const select = document.querySelector('.custom-select');
+const selected = select.querySelector('.select-selected');
+const items = select.querySelector('.select-items');
 
-}
+selected.addEventListener('click', () => {
+  items.style.display = items.style.display === 'block' ? 'none' : 'block';
+});
 
-document.getElementById("download").href=url;
+items.querySelectorAll('div').forEach(option => {
+  option.addEventListener('click', () => {
+    const logo = option.dataset.logo;
+    const color = option.dataset.color;
+    const text = option.textContent;
 
-}
+    selected.querySelector('img').src = logo;
+    selected.querySelector('span').textContent = text;
+    selected.querySelector('span').style.color = color;
 
+    items.style.display = 'none';
+  });
+});
+
+// Close dropdown if clicked outside
+document.addEventListener('click', (e) => {
+  if (!select.contains(e.target)) items.style.display = 'none';
+});
 </script>
 
 </body>
