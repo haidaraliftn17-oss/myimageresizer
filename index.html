@@ -31,17 +31,17 @@ body{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:15px;
+  gap:20px;
 }
 .drop:hover{
   background:#f0f0f0;
 }
 
 .drop img{
-  width:60px;
-  height:60px;
+  width:120px;   /* Bada logo */
+  height:120px;  /* Bada logo */
   object-fit:cover;
-  border-radius:8px;
+  border-radius:12px;
 }
 
 /* Buttons */
@@ -74,9 +74,9 @@ canvas{
 
 <h2>Image Resize Tool</h2>
 
-<!-- Drop area with only logo centered -->
+<!-- Drop area with only big logo -->
 <div class="drop" id="dropArea">
-  <img id="dropLogo" src="red-logo.png" alt="Logo">
+  <img id="dropLogo" src="red-logo.png" alt="">
   <span>Select or Drag Image</span>
   <input type="file" id="file" hidden>
 </div>
