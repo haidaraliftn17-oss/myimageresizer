@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Image Resizer Tool</title>
+
 <style>
 body{
   font-family:Arial;
@@ -33,27 +34,29 @@ body{
   justify-content:center;
   gap:15px;
 }
+
 .drop:hover{
   background:#f9f9f9;
 }
 
-/* Inner box for logo */
+/* Inner box for gallery logo */
 .logo-box{
-  width:160px;
-  height:160px;
-  background:#eaeaea;
+  width:180px;
+  height:180px;
+  background:linear-gradient(135deg,#f0f0f0,#dcdcdc);
   border-radius:12px;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  box-shadow:0 4px 8px rgba(0,0,0,0.2);
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+  padding:10px;
 }
 
 .logo-box img{
   width:100%;
   height:100%;
-  object-fit:contain;  /* Proper fit without cropping */
+  object-fit:contain;
 }
 
 /* Buttons */
@@ -80,19 +83,24 @@ canvas{
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
 <h2>Image Resize Tool</h2>
 
-<!-- Drop area with inner logo box -->
+<!-- Drop area -->
 <div class="drop" id="dropArea">
+
   <div class="logo-box">
-    <img id="dropLogo" src="red-logo.png" alt="">
+    <img id="dropLogo" src="red-logo.png">
   </div>
+
   <span>Select or Drag Image</span>
+
   <input type="file" id="file" hidden>
+
 </div>
 
 <p>Width: <span id="w"></span></p>
@@ -108,44 +116,62 @@ canvas{
 
 <b>Quick Compress</b>
 <br>
+
 <button onclick="compress(20)">20KB</button>
 <button onclick="compress(30)">30KB</button>
 <button onclick="compress(40)">40KB</button>
 <button onclick="compress(50)">50KB</button>
 
 <canvas id="canvas"></canvas>
+
 <a id="download" download="image.jpg">Download Image</a>
 
 </div>
 
 <script>
-// Image Resize Logic
+
+/* Image Resize Logic */
+
 let fileInput=document.getElementById("file");
 let img=new Image();
 
 fileInput.onchange=function(){
+
   let file=this.files[0];
   if(!file) return;
+
   img.src=URL.createObjectURL(file);
+
 }
 
 img.onload=function(){
+
   document.getElementById("w").innerText=img.width;
   document.getElementById("h").innerText=img.height;
+
 }
 
 function resize(){
+
   let kb=document.getElementById("kb").value;
-  if(!kb){ alert("Enter target KB"); return; }
+
+  if(!kb){
+    alert("Enter target KB");
+    return;
+  }
+
   compress(parseInt(kb));
+
 }
 
 function compress(targetKB){
+
   let canvas=document.getElementById("canvas");
   let ctx=canvas.getContext("2d");
 
   canvas.width=img.width;
   canvas.height=img.height;
+
   ctx.drawImage(img,0,0);
 
   let quality=0.95;
@@ -153,36 +179,45 @@ function compress(targetKB){
   let sizeKB=0;
 
   while(quality>0){
+
     url=canvas.toDataURL("image/jpeg",quality);
     sizeKB=Math.round((url.length*3/4)/1024);
+
     if(sizeKB<=targetKB) break;
+
     quality-=0.01;
+
   }
 
   document.getElementById("download").href=url;
+
 }
 
-// Gallery logos for drop area
-const dropArea = document.getElementById('dropArea');
-const dropLogo = document.getElementById('dropLogo');
+/* Gallery logos */
 
-const galleries = [
+const dropArea=document.getElementById("dropArea");
+const dropLogo=document.getElementById("dropLogo");
+
+const galleries=[
+
   {logo:"red-logo.png"},
   {logo:"blue-logo.png"},
   {logo:"green-logo.png"}
+
 ];
 
-let currentIndex = 0;
+let currentIndex=0;
 
-// Click drop area to cycle gallery + open file select
-dropArea.addEventListener('click', () => {
-  currentIndex = (currentIndex + 1) % galleries.length;
-  const gallery = galleries[currentIndex];
+dropArea.addEventListener("click",()=>{
 
-  dropLogo.src = gallery.logo;
+  currentIndex=(currentIndex+1)%galleries.length;
+
+  dropLogo.src=galleries[currentIndex].logo;
 
   fileInput.click();
+
 });
+
 </script>
 
 </body>
