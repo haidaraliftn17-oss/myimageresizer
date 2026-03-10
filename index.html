@@ -3,6 +3,8 @@
 <head>
 <title>Image Resize in KB</title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+
 <style>
 
 body{
@@ -22,10 +24,16 @@ box-shadow:0 0 10px rgba(0,0,0,0.1);
 
 .drop-box{
 border:2px dashed #aaa;
-padding:40px;
+padding:20px;
 margin-top:20px;
 border-radius:10px;
 background:#fafafa;
+position:relative;
+}
+
+.drop-box img{
+max-width:100%;
+margin-top:10px;
 }
 
 button{
@@ -67,9 +75,9 @@ background:#1e7e34;
 
 <p>Compress an image to 20kb, 50kb, 200kb, or any other size</p>
 
-<div class="drop-box">
+<div class="drop-box" id="dropBox">
 
-<p>Select or Drag and Drop Image Here</p>
+<p id="dropText">Select or Drag and Drop Image Here</p>
 
 <button onclick="document.getElementById('imageInput').click()">
 Select Image
@@ -77,9 +85,17 @@ Select Image
 
 <input type="file" id="imageInput" accept="image/*" hidden>
 
+<br>
+
+<img id="preview">
+
 </div>
 
 <br>
+
+<button id="cropBtn" style="display:none;">Crop Image</button>
+
+<br><br>
 
 <label>Enter Size (KB)</label><br>
 <input type="number" id="size" placeholder="50">
@@ -103,9 +119,49 @@ Select Image
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
 <script>
 
 let finalBlob;
+let cropper;
+
+document.getElementById("imageInput").addEventListener("change", function(e){
+
+let file = e.target.files[0];
+let reader = new FileReader();
+
+reader.onload = function(event){
+
+let img = document.getElementById("preview");
+img.src = event.target.result;
+
+document.getElementById("dropText").style.display="none";
+document.getElementById("cropBtn").style.display="inline-block";
+
+if(cropper){
+cropper.destroy();
+}
+
+cropper = new Cropper(img,{
+viewMode:1
+});
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+document.getElementById("cropBtn").onclick=function(){
+
+let canvas = cropper.getCroppedCanvas();
+
+document.getElementById("preview").src = canvas.toDataURL();
+
+cropper.destroy();
+
+}
 
 function setSize(kb){
 document.getElementById("size").value = kb;
@@ -113,29 +169,25 @@ document.getElementById("size").value = kb;
 
 function resizeImage(){
 
-let file=document.getElementById("imageInput").files[0];
+let img=document.getElementById("preview");
 let targetKB=document.getElementById("size").value;
 
-if(!file){
+if(!img.src){
 alert("Please select image");
 return;
 }
 
-let reader=new FileReader();
+let image=new Image();
 
-reader.onload=function(e){
-
-let img=new Image();
-
-img.onload=function(){
+image.onload=function(){
 
 let canvas=document.createElement("canvas");
 let ctx=canvas.getContext("2d");
 
-canvas.width=img.width;
-canvas.height=img.height;
+canvas.width=image.width;
+canvas.height=image.height;
 
-ctx.drawImage(img,0,0);
+ctx.drawImage(image,0,0);
 
 let quality=0.9;
 
@@ -165,11 +217,7 @@ compress();
 
 }
 
-img.src=e.target.result;
-
-}
-
-reader.readAsDataURL(file);
+image.src=img.src;
 
 }
 
