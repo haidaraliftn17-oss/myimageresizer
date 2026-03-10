@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Image Resize in KB</title>
+
+<title>Resize Image to 20KB 30KB 40KB 50KB Online Free</title>
+
+<meta name="description" content="Free online tool to resize and compress images to 20KB, 30KB, 40KB, or 50KB. Crop and download images instantly.">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
 
@@ -24,11 +27,11 @@ box-shadow:0 0 10px rgba(0,0,0,0.1);
 
 .drop-box{
 border:2px dashed #aaa;
-padding:20px;
+padding:25px;
 margin-top:20px;
 border-radius:10px;
 background:#fafafa;
-position:relative;
+cursor:pointer;
 }
 
 .drop-box img{
@@ -50,18 +53,48 @@ button:hover{
 background:#0056b3;
 }
 
-input{
-margin-top:15px;
-padding:6px;
-width:100px;
-}
-
 .quick button{
 background:#28a745;
 }
 
 .quick button:hover{
 background:#1e7e34;
+}
+
+.info{
+margin-top:35px;
+text-align:left;
+font-size:14px;
+line-height:1.6;
+}
+
+.social a{
+text-decoration:none;
+margin-right:15px;
+font-weight:bold;
+color:#333;
+}
+
+.social img{
+width:20px;
+vertical-align:middle;
+margin-right:6px;
+}
+
+.size-info{
+margin-top:10px;
+font-size:14px;
+color:#444;
+}
+
+.share-btn{
+margin-top:15px;
+display:inline-block;
+background:#25D366;
+color:white;
+padding:8px 15px;
+border-radius:6px;
+text-decoration:none;
 }
 
 </style>
@@ -73,21 +106,17 @@ background:#1e7e34;
 
 <h1>Image Resize in KB</h1>
 
-<p>Compress an image to 20kb, 50kb, 200kb, or any other size</p>
+<p>Compress images to 20KB, 30KB, 40KB or 50KB</p>
 
 <div class="drop-box" id="dropBox">
 
-<p id="dropText">Select or Drag and Drop Image Here</p>
-
-<button onclick="document.getElementById('imageInput').click()">
-Select Image
-</button>
+<p id="dropText">Drag & Drop Image Here or Click to Select</p>
 
 <input type="file" id="imageInput" accept="image/*" hidden>
 
-<br>
-
 <img id="preview">
+
+<div class="size-info" id="originalSize"></div>
 
 </div>
 
@@ -117,6 +146,36 @@ Select Image
 
 <button id="downloadBtn" style="display:none;">Download Image</button>
 
+<div class="info">
+
+<h3>About This Tool</h3>
+
+<p>
+This free online tool helps you resize and compress images to a specific size in KB.
+You can crop your image and compress it to 20KB, 30KB, 40KB or 50KB easily.
+Useful for job forms and online applications.
+</p>
+
+<h3>Follow Us</h3>
+
+<div class="social">
+
+<a href="https://www.facebook.com/share/1DM3AM8wxy/" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">Facebook
+</a>
+
+<a href="https://www.instagram.com/haidar4946?igsh=ODE2NXVxczJlNGN3" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">Instagram
+</a>
+
+</div>
+
+<a class="share-btn" href="https://wa.me/?text=Check%20this%20free%20image%20resize%20tool" target="_blank">
+Share on WhatsApp
+</a>
+
+</div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -126,56 +185,64 @@ Select Image
 let finalBlob;
 let cropper;
 
-document.getElementById("imageInput").addEventListener("change", function(e){
+let dropBox = document.getElementById("dropBox");
 
-let file = e.target.files[0];
-let reader = new FileReader();
+dropBox.onclick = () => document.getElementById("imageInput").click();
 
-reader.onload = function(event){
-
-let img = document.getElementById("preview");
-img.src = event.target.result;
-
-document.getElementById("dropText").style.display="none";
-document.getElementById("cropBtn").style.display="inline-block";
-
-if(cropper){
-cropper.destroy();
-}
-
-cropper = new Cropper(img,{
-viewMode:1
+dropBox.addEventListener("dragover",(e)=>{
+e.preventDefault();
 });
 
-};
+dropBox.addEventListener("drop",(e)=>{
+e.preventDefault();
+let file = e.dataTransfer.files[0];
+loadImage(file);
+});
+
+document.getElementById("imageInput").addEventListener("change",function(e){
+loadImage(e.target.files[0]);
+});
+
+function loadImage(file){
+
+let reader=new FileReader();
+
+document.getElementById("originalSize").innerText =
+"Original Size: "+(file.size/1024).toFixed(1)+" KB";
+
+reader.onload=function(e){
+
+let img=document.getElementById("preview");
+img.src=e.target.result;
+
+document.getElementById("cropBtn").style.display="inline-block";
+
+if(cropper) cropper.destroy();
+
+cropper=new Cropper(img,{viewMode:1});
+
+}
 
 reader.readAsDataURL(file);
 
-});
+}
 
 document.getElementById("cropBtn").onclick=function(){
 
-let canvas = cropper.getCroppedCanvas();
-
-document.getElementById("preview").src = canvas.toDataURL();
-
+let canvas=cropper.getCroppedCanvas();
+document.getElementById("preview").src=canvas.toDataURL();
 cropper.destroy();
 
 }
 
 function setSize(kb){
-document.getElementById("size").value = kb;
+document.getElementById("size").value=kb;
 }
 
 function resizeImage(){
 
 let img=document.getElementById("preview");
 let targetKB=document.getElementById("size").value;
-
-if(!img.src){
-alert("Please select image");
-return;
-}
 
 let image=new Image();
 
@@ -195,16 +262,16 @@ function compress(){
 
 canvas.toBlob(function(blob){
 
-let sizeKB = blob.size/1024;
+let sizeKB=blob.size/1024;
 
-if(sizeKB > targetKB && quality > 0.1){
+if(sizeKB>targetKB && quality>0.1){
 
-quality -= 0.05;
+quality-=0.05;
 compress();
 
 }else{
 
-finalBlob = blob;
+finalBlob=blob;
 document.getElementById("downloadBtn").style.display="inline-block";
 
 }
