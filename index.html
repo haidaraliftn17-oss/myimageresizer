@@ -196,6 +196,17 @@ Upload your image, choose the target size like 20KB, 30KB, 40KB or 50KB,
 and click resize. The tool automatically compresses the image while keeping good quality.
 </p>
 
+<h2>Frequently Asked Questions</h2>
+
+<h3>How can I resize an image to 20KB?</h3>
+<p>Upload image → choose 20KB → click resize → download compressed image.</p>
+
+<h3>Can I compress images to 30KB or 50KB?</h3>
+<p>Yes, you can easily compress images to 20KB, 30KB, 40KB or 50KB.</p>
+
+<h3>Is this image compressor free?</h3>
+<p>Yes, this tool is completely free and works directly in your browser.</p>
+
 </div>
 
 </div>
@@ -207,15 +218,6 @@ and click resize. The tool automatically compresses the image while keeping good
 let finalBlob;
 let cropper;
 
-let dropBox=document.getElementById("dropBox");
-
-dropBox.addEventListener("dragover",(e)=>{e.preventDefault();});
-
-dropBox.addEventListener("drop",(e)=>{
-e.preventDefault();
-loadImage(e.dataTransfer.files[0]);
-});
-
 document.getElementById("imageInput").addEventListener("change",(e)=>{
 loadImage(e.target.files[0]);
 });
@@ -224,7 +226,7 @@ function loadImage(file){
 
 let reader=new FileReader();
 
-document.getElementById("originalSize").innerText=
+document.getElementById("originalSize").innerText =
 "Original Size: "+(file.size/1024).toFixed(1)+" KB";
 
 reader.onload=function(e){
@@ -276,8 +278,6 @@ canvas.height=image.height;
 
 ctx.drawImage(image,0,0);
 
-let min=0;
-let max=1;
 let quality=0.9;
 
 function compress(){
@@ -286,13 +286,13 @@ canvas.toBlob(function(blob){
 
 let sizeKB=blob.size/1024;
 
-document.getElementById("progressBar").value+=10;
+document.getElementById("progressBar").value +=10;
 
 if(Math.abs(sizeKB-targetKB)<1){
 
 finalBlob=blob;
 
-document.getElementById("resultSize").innerHTML=
+document.getElementById("resultSize").innerHTML =
 "Compressed Size: "+sizeKB.toFixed(1)+" KB";
 
 document.getElementById("downloadBtn").style.display="inline-block";
@@ -304,14 +304,12 @@ return;
 }
 
 if(sizeKB>targetKB){
-max=quality;
+quality -=0.05;
 }else{
-min=quality;
+quality +=0.02;
 }
 
-quality=(min+max)/2;
-
-if(max-min<0.01){
+if(quality<0.1 || quality>1){
 finalBlob=blob;
 document.getElementById("downloadBtn").style.display="inline-block";
 return;
@@ -340,6 +338,30 @@ a.click();
 
 }
 
+</script>
+
+<script type="application/ld+json">
+{
+"@context":"https://schema.org",
+"@type":"FAQPage",
+"mainEntity":[
+{
+"@type":"Question",
+"name":"How can I resize an image to 20KB?",
+"acceptedAnswer":{"@type":"Answer","text":"Upload your image, choose 20KB and click resize."}
+},
+{
+"@type":"Question",
+"name":"Can I compress images to 30KB or 50KB?",
+"acceptedAnswer":{"@type":"Answer","text":"Yes, you can compress images to 20KB, 30KB, 40KB or 50KB."}
+},
+{
+"@type":"Question",
+"name":"Is this image compressor free?",
+"acceptedAnswer":{"@type":"Answer","text":"Yes, this tool is completely free."}
+}
+]
+}
 </script>
 
 </body>
