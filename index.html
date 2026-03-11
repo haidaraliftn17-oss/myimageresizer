@@ -17,7 +17,6 @@ font-family:Arial;
 background:#f2f2f2;
 text-align:center;
 margin:0;
-padding:0;
 }
 
 .container{
@@ -63,16 +62,13 @@ color:white;
 cursor:pointer;
 }
 
-button:hover{
-background:#0056b3;
-}
-
 .quick button{
 background:#28a745;
 }
 
-.quick button:hover{
-background:#1e7e34;
+.progress-box{
+margin-top:10px;
+display:none;
 }
 
 .info{
@@ -95,12 +91,6 @@ vertical-align:middle;
 margin-right:6px;
 }
 
-.size-info{
-margin-top:10px;
-font-size:14px;
-color:#444;
-}
-
 .share-btn{
 margin-top:15px;
 display:inline-block;
@@ -119,7 +109,6 @@ text-decoration:none;
 <div class="container">
 
 <h1>Image Resize in KB</h1>
-
 <p>Compress images to 20KB, 30KB, 40KB or 50KB</p>
 
 <div class="drop-box" id="dropBox">
@@ -133,7 +122,7 @@ text-decoration:none;
 
 <img id="preview">
 
-<div class="size-info" id="originalSize"></div>
+<div id="originalSize"></div>
 
 </div>
 
@@ -159,7 +148,16 @@ text-decoration:none;
 
 <button onclick="resizeImage()">Resize Image</button>
 
-<br><br>
+<div class="progress-box" id="progressBox">
+<p>Compressing Image...</p>
+<progress id="progressBar" value="0" max="100" style="width:100%;"></progress>
+</div>
+
+<br>
+
+<div id="resultSize"></div>
+
+<br>
 
 <button id="downloadBtn" style="display:none;">Download Image</button>
 
@@ -170,7 +168,7 @@ text-decoration:none;
 <p>
 This free online tool helps you resize and compress images to a specific size in KB.
 You can crop your image and compress it to 20KB, 30KB, 40KB or 50KB easily.
-Useful for job forms, exam forms, and online applications where a specific image size is required.
+Useful for job forms, exam forms, and online applications.
 </p>
 
 <h3>Follow Us</h3>
@@ -191,6 +189,13 @@ Useful for job forms, exam forms, and online applications where a specific image
 Share on WhatsApp
 </a>
 
+<h2>How to Resize Image to 20KB, 30KB, 40KB or 50KB?</h2>
+
+<p>
+Upload your image, choose the target size like 20KB, 30KB, 40KB or 50KB,
+and click resize. The tool automatically compresses the image while keeping good quality.
+</p>
+
 </div>
 
 </div>
@@ -204,17 +209,14 @@ let cropper;
 
 let dropBox=document.getElementById("dropBox");
 
-dropBox.addEventListener("dragover",(e)=>{
-e.preventDefault();
-});
+dropBox.addEventListener("dragover",(e)=>{e.preventDefault();});
 
 dropBox.addEventListener("drop",(e)=>{
 e.preventDefault();
-let file=e.dataTransfer.files[0];
-loadImage(file);
+loadImage(e.dataTransfer.files[0]);
 });
 
-document.getElementById("imageInput").addEventListener("change",function(e){
+document.getElementById("imageInput").addEventListener("change",(e)=>{
 loadImage(e.target.files[0]);
 });
 
@@ -222,7 +224,7 @@ function loadImage(file){
 
 let reader=new FileReader();
 
-document.getElementById("originalSize").innerText =
+document.getElementById("originalSize").innerText=
 "Original Size: "+(file.size/1024).toFixed(1)+" KB";
 
 reader.onload=function(e){
@@ -256,6 +258,9 @@ document.getElementById("size").value=kb;
 
 function resizeImage(){
 
+document.getElementById("progressBox").style.display="block";
+document.getElementById("progressBar").value=20;
+
 let img=document.getElementById("preview");
 let targetKB=document.getElementById("size").value;
 
@@ -281,10 +286,19 @@ canvas.toBlob(function(blob){
 
 let sizeKB=blob.size/1024;
 
+document.getElementById("progressBar").value+=10;
+
 if(Math.abs(sizeKB-targetKB)<1){
 
 finalBlob=blob;
+
+document.getElementById("resultSize").innerHTML=
+"Compressed Size: "+sizeKB.toFixed(1)+" KB";
+
 document.getElementById("downloadBtn").style.display="inline-block";
+
+document.getElementById("progressBar").value=100;
+
 return;
 
 }
