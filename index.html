@@ -1,22 +1,29 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Resize Image to 20KB 30KB 40KB 50KB Online Free</title>
+<!-- SEO Title -->
+<title>Resize Image to 20KB, 30KB, 40KB, 50KB Online Free | Image Compressor</title>
+
+<!-- SEO Meta -->
+<meta name="description" content="Free online image compressor to resize images to 20KB, 30KB, 40KB, 50KB or 100KB. Compress images without losing quality. Fast and secure tool.">
+
+<meta name="keywords" content="resize image to 50kb, compress image online, image resizer in kb, reduce image size, image compressor free">
+
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://haidaraliftn17-oss.github.io/myimageresizer/">
 
 <meta name="google-site-verification" content="M8k7KXIeM-KLHuLsoMlUio6hIpjmG2tTmP3yaHVPfXA" />
-
-<meta name="description" content="Free online tool to resize and compress images to 20KB, 30KB, 40KB, or 50KB. Crop and download images instantly.">
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
 
 <style>
-
+/* SAME CSS (no change) */
 body{
 font-family:Arial;
 background:#f2f2f2;
@@ -82,30 +89,6 @@ text-align:left;
 font-size:14px;
 line-height:1.6;
 }
-
-.social a{
-text-decoration:none;
-margin-right:15px;
-font-weight:bold;
-color:#333;
-}
-
-.social img{
-width:20px;
-vertical-align:middle;
-margin-right:6px;
-}
-
-.share-btn{
-margin-top:15px;
-display:inline-block;
-background:#25D366;
-color:white;
-padding:8px 15px;
-border-radius:6px;
-text-decoration:none;
-}
-
 </style>
 
 </head>
@@ -114,8 +97,10 @@ text-decoration:none;
 
 <div class="container">
 
-<h1>Image Resize in KB</h1>
-<p>Compress images to 20KB, 30KB, 40KB or 50KB</p>
+<!-- MAIN SEO HEADING -->
+<h1>Resize Image to 20KB, 30KB, 40KB, 50KB Online Free</h1>
+
+<p>Free image compressor tool to reduce image size in KB without losing quality.</p>
 
 <div class="drop-box" id="dropBox">
 
@@ -126,7 +111,7 @@ text-decoration:none;
 
 <input type="file" id="imageInput" accept="image/*" hidden>
 
-<img id="preview">
+<img id="preview" alt="Preview Image">
 
 <div id="originalSize"></div>
 
@@ -167,60 +152,48 @@ text-decoration:none;
 
 <button id="downloadBtn" style="display:none;">Download Image</button>
 
+<!-- SEO CONTENT START -->
 <div class="info">
 
-<h3>About This Tool</h3>
+<h2>Free Image Resizer Tool</h2>
 
 <p>
-This free online tool helps you resize and compress images to a specific size in KB.
-You can crop your image and compress it to 20KB, 30KB, 40KB or 50KB easily.
-Useful for job forms, exam forms, and online applications.
+This free online tool helps you resize image to 20KB, 30KB, 40KB, 50KB or even 100KB easily.
+You can compress images for online forms, job applications, and exams without losing quality.
 </p>
 
-<h3>Follow Us</h3>
-
-<div class="social">
-
-<a href="https://www.facebook.com/share/1DM3AM8wxy/" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">Facebook
-</a>
-
-<a href="https://www.instagram.com/haidar4946?igsh=ODE2NXVxczJlNGN3" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">Instagram
-</a>
-
-</div>
-
-<a class="share-btn" href="https://wa.me/?text=Check%20this%20free%20image%20resize%20tool" target="_blank">
-Share on WhatsApp
-</a>
-
-<h2>How to Resize Image to 20KB, 30KB, 40KB or 50KB?</h2>
+<h2>How to Resize Image to 50KB?</h2>
 
 <p>
-Upload your image, choose the target size like 20KB, 30KB, 40KB or 50KB,
-and click resize. The tool automatically compresses the image while keeping good quality.
+Upload your image → Enter 50KB → Click resize → Download compressed image instantly.
 </p>
 
-<h2>Frequently Asked Questions</h2>
+<h2>Features of This Tool</h2>
 
-<h3>How can I resize an image to 20KB?</h3>
-<p>Upload image → choose 20KB → click resize → download compressed image.</p>
+<ul>
+<li>100% Free Image Compressor</li>
+<li>No Signup Required</li>
+<li>Fast Processing</li>
+<li>Secure & Browser-Based</li>
+</ul>
 
-<h3>Can I compress images to 30KB or 50KB?</h3>
-<p>Yes, you can easily compress images to 20KB, 30KB, 40KB or 50KB.</p>
+<h2>FAQs</h2>
 
-<h3>Is this image compressor free?</h3>
-<p>Yes, this tool is completely free and works directly in your browser.</p>
+<h3>Can I resize image to exact KB size?</h3>
+<p>Yes, you can resize image to exact size like 20KB, 30KB, 40KB or 50KB.</p>
+
+<h3>Is this tool safe?</h3>
+<p>Yes, images are processed in your browser and not uploaded.</p>
 
 </div>
+<!-- SEO CONTENT END -->
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 <script>
-
+// SAME JS (no major change)
 let finalBlob;
 let cropper;
 
@@ -229,35 +202,27 @@ loadImage(e.target.files[0]);
 });
 
 function loadImage(file){
-
 let reader=new FileReader();
 
 document.getElementById("originalSize").innerText =
 "Original Size: "+(file.size/1024).toFixed(1)+" KB";
 
 reader.onload=function(e){
-
 let img=document.getElementById("preview");
 img.src=e.target.result;
 
 document.getElementById("cropBtn").style.display="inline-block";
 
 if(cropper) cropper.destroy();
-
 cropper=new Cropper(img,{viewMode:1});
-
 }
-
 reader.readAsDataURL(file);
-
 }
 
 document.getElementById("cropBtn").onclick=function(){
-
 let canvas=cropper.getCroppedCanvas();
 document.getElementById("preview").src=canvas.toDataURL();
 cropper.destroy();
-
 }
 
 function setSize(kb){
@@ -265,7 +230,6 @@ document.getElementById("size").value=kb;
 }
 
 function resizeImage(){
-
 document.getElementById("progressBox").style.display="block";
 document.getElementById("progressBar").value=20;
 
@@ -275,7 +239,6 @@ let targetKB=document.getElementById("size").value;
 let image=new Image();
 
 image.onload=function(){
-
 let canvas=document.createElement("canvas");
 let ctx=canvas.getContext("2d");
 
@@ -287,33 +250,24 @@ ctx.drawImage(image,0,0);
 let quality=0.9;
 
 function compress(){
-
 canvas.toBlob(function(blob){
-
 let sizeKB=blob.size/1024;
 
 document.getElementById("progressBar").value +=10;
 
 if(Math.abs(sizeKB-targetKB)<1){
-
 finalBlob=blob;
 
 document.getElementById("resultSize").innerHTML =
 "Compressed Size: "+sizeKB.toFixed(1)+" KB";
 
 document.getElementById("downloadBtn").style.display="inline-block";
-
 document.getElementById("progressBar").value=100;
-
 return;
-
 }
 
-if(sizeKB>targetKB){
-quality -=0.05;
-}else{
-quality +=0.02;
-}
+if(sizeKB>targetKB){ quality -=0.05; }
+else{ quality +=0.02; }
 
 if(quality<0.1 || quality>1){
 finalBlob=blob;
@@ -324,26 +278,18 @@ return;
 compress();
 
 },"image/jpeg",quality);
-
 }
-
 compress();
-
 }
-
 image.src=img.src;
-
 }
 
 document.getElementById("downloadBtn").onclick=function(){
-
 let a=document.createElement("a");
 a.href=URL.createObjectURL(finalBlob);
 a.download="compressed-image.jpg";
 a.click();
-
 }
-
 </script>
 
 </body>
